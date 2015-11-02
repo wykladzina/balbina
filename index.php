@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-input, button, textarea {
+#dodawacz_wpisow input, #dodawacz_wpisow button, #dodawacz_wpisow textarea {
   width: 100%;
   font-size: 2em;
 }
@@ -12,7 +12,7 @@ input, button, textarea {
 </head>
 <body>
 
-<form action="dodaj.php" method="post" enctype="multipart/form-data">
+<form id='dodawacz_wpisow' action="dodaj.php" method="post" enctype="multipart/form-data">
 dodaj wiadomość:<br>
 <?php if (isset($kto)): ?>
 <input type="hidden" name="kto" value="<?=$kto?>"><br>
@@ -27,6 +27,8 @@ dodaj wiadomość:<br>
 <?php
 require 'wspolne.php';
 
+$ile_wpisow = 20;
+if (isset($_GET['ile_wpisow'])) $ile_wpisow = (int)$_GET['ile_wpisow'];
 $kto_oglada = '???';
 if (isset($kto)) {
   $kto_oglada = $kto;
@@ -35,7 +37,7 @@ $ip = $_SERVER['REMOTE_ADDR'];
 
 pg_query("insert into obejrzenia (kto, ip) values ('$kto_oglada', '$ip')");
 
-foreach (pg_fetch_all(pg_query("select * from wiadomosci order by kiedy desc limit 20")) as $w) {
+foreach (pg_fetch_all(pg_query("select * from wiadomosci order by kiedy desc limit $ile_wpisow")) as $w) {
   ?>
   <p style="color: red"><?=$w['kto']?> <span style="color: navy"><?=$w['kiedy']?></span></p>
   <?
@@ -50,6 +52,14 @@ foreach (pg_fetch_all(pg_query("select * from wiadomosci order by kiedy desc lim
   <?php
 }
 ?>
+
+<hr>
+
+Teraz widzisz <?=$ile_wpisow?> wpisów. Chcesz zobaczyć inną liczbę? Ustaw poniżej: <br>
+<form>
+  Chcę zobaczyć <input type="text" name='ile_wpisow' value='<?=$ile_wpisow?>'> wpisów.
+  <button type='submit'>pokaż</button>
+</form>
 
 </body>
 </html>
