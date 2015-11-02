@@ -2,9 +2,9 @@
 $id_wiadomosci = (int)$_GET['id_wiadomosci'];
 $male = isset($_GET['male']);
 
-$etag = $id_wiadomosci . '.' . ($male ? 'male' : 'duze');
+$etag = $id_wiadomosci;
 header("Etag: $etag");
-if (trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
+if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
   header("HTTP/1.1 304 Not Modified");
   exit;
 }
