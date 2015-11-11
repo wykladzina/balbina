@@ -42,7 +42,7 @@ foreach (pg_fetch_all(pg_query("select * from wiadomosci order by kiedy desc lim
   <p style="color: red"><?=$w['kto']?> <span style="color: navy"><?=$w['kiedy']?></span></p>
   <?
     $tresc = $w['tresc'];
-    $tresc = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.\-,]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $tresc);
+    $tresc = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.\-,:#]*(\?\S+)?)?)?)@', '<a href="$1">$1</a>', $tresc);
     $jest_zdjecie = file_exists("zdjecia/{$w['id']}");
   ?>
   <p style="margin-bottom: 2em"><?=$tresc?></p>
