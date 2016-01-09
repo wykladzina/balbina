@@ -37,7 +37,7 @@ $ip = $_SERVER['REMOTE_ADDR'];
 
 pg_query("insert into obejrzenia (kto, ip) values ('$kto_oglada', '$ip')");
 
-foreach (pg_fetch_all(pg_query("select * from wiadomosci order by kiedy desc limit $ile_wpisow")) as $w) {
+foreach (pg_fetch_all(pg_query("select id, kto, tresc, to_char(kiedy, 'YYYY-MM-DD HH24:MI (SS \"s\")') as kiedy from wiadomosci order by kiedy desc limit $ile_wpisow")) as $w) {
   ?>
   <p style="color: red"><?=$w['kto']?> <span style="color: navy"><?=$w['kiedy']?></span> <span style="color: white"><?=$w['id']?></span></p>
   <?
